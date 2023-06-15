@@ -1,20 +1,18 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/LoaiEsam37/443EMP/util"
 )
 
 func main() {
-	Timeout, InsecureSkipVerify := util.SetConfig()
-	url := "https://www.google.com"
-	resp, err := util.Get(url, Timeout, InsecureSkipVerify)
+	Timeout, InsecureSkipVerify, Filename, LinesPerSubarray := util.SetConfig()
+	urls, err := util.ReadAndSplitFile(Filename, LinesPerSubarray)
 	if err != nil {
-		fmt.Println("Error:", err)
-		return
+		panic(err)
 	}
-	defer resp.Body.Close()
+	Domains := util.Get(urls, Timeout, InsecureSkipVerify)
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println("Status code:", resp.StatusCode)
 }

@@ -1,3 +1,6 @@
 timeout: 3
 TLSClientConfig:
     InsecureSkipVerify: true
+fileInfo:
+    filename: myFile.txt
+    linesPerSubarray: 1000

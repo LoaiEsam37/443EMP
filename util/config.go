@@ -12,9 +12,13 @@ type Config struct {
 	TLSClientConfig struct {
 		InsecureSkipVerify bool `yaml:"InsecureSkipVerify"`
 	} `yaml:"TLSClientConfig"`
+	FileInfo struct {
+		Filename         string `yaml:"filename"`
+		LinesPerSubarray int    `yaml:"linesPerSubarray"`
+	} `yaml:"fileInfo"`
 }
 
-func SetConfig() (int, bool) {
+func SetConfig() (int, bool, string, int) {
 	data, err := ioutil.ReadFile("./config.yml")
 	if err != nil {
 		panic(err)
@@ -28,9 +32,11 @@ func SetConfig() (int, bool) {
 
 	var Timeout = config.Timeout
 	var InsecureSkipVerify = config.TLSClientConfig.InsecureSkipVerify
+	var Filename = config.FileInfo.Filename
+	var LinesPerSubarray = config.FileInfo.LinesPerSubarray
 
 	fmt.Println("Timeout: ", Timeout)
 	fmt.Println("InsecureSkipVerify: ", InsecureSkipVerify)
 
-	return Timeout, InsecureSkipVerify
+	return Timeout, InsecureSkipVerify, Filename, LinesPerSubarray
 }

@@ -2,7 +2,7 @@ package util
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"gopkg.in/yaml.v2"
 )
@@ -19,13 +19,15 @@ type Config struct {
 }
 
 func SetConfig() (int, bool, string, int) {
-	data, err := ioutil.ReadFile("./config.yml")
+	file, err := os.Open("./config.yml")
 	if err != nil {
 		panic(err)
 	}
+	defer file.Close()
 
 	var config Config
-	err = yaml.Unmarshal(data, &config)
+	decoder := yaml.NewDecoder(file)
+	err = decoder.Decode(&config)
 	if err != nil {
 		panic(err)
 	}

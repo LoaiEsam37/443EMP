@@ -7,8 +7,9 @@ import (
 )
 
 func main() {
-	url := "www.example.com"
-	resp, err := util.Get(url)
+	Timeout, InsecureSkipVerify := util.SetConfig()
+	url := "https://www.google.com"
+	resp, err := util.Get(url, Timeout, InsecureSkipVerify)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return

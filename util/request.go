@@ -3,16 +3,18 @@ package util
 import (
 	"crypto/tls"
 	"net/http"
+	"time"
 )
 
-func Get(url string) (*http.Response, error) {
+func Get(url string, timeout int, InsecureSkipVerify bool) (*http.Response, error) {
+
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
+			InsecureSkipVerify: InsecureSkipVerify,
 		},
 	}
 
-	client := &http.Client{Transport: tr}
+	client := &http.Client{Transport: tr, Timeout: time.Duration(timeout) * time.Second}
 
 	return client.Get(url)
 }

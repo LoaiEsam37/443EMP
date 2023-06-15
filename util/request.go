@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func Get(url string, timeout int, InsecureSkipVerify bool) (*http.Response, error) {
+func Get(urls []string, timeout int, InsecureSkipVerify bool) (Domains []string) {
 
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
@@ -14,7 +14,18 @@ func Get(url string, timeout int, InsecureSkipVerify bool) (*http.Response, erro
 		},
 	}
 
-	client := &http.Client{Transport: tr, Timeout: time.Duration(timeout) * time.Second}
+	// make a seperate client to not interfere with other requests while multiprocessing
+	client := http.Client{Transport: tr, Timeout: time.Duration(timeout) * time.Second}
+	var vaildUrls []string
+	for _, url := range urls {
+		resp, err := client.Get(url)
+		if err != nil {
+			continue
+		} else if resp.StatusCode == 200 {
+			vaildUrls = append(vaildUrls, url)
+		}
+		defer resp.Body.Close()
+	}
 
-	return client.Get(url)
+	return vaildUrls
 }

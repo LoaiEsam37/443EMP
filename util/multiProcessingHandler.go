@@ -6,14 +6,14 @@ import (
 	"time"
 )
 
-func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify bool, Output string) {
+func MultiProcessingHandler(urlsPointer *[][]string, timeout *int, InsecureSkipVerify *bool, Output *string) {
 
-	file, err := os.OpenFile(Output, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	file, err := os.OpenFile(*Output, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
-	numWorkers := len(urls)
+	numWorkers := len(*urlsPointer)
 
 	channels := make([]chan string, numWorkers)
 
@@ -23,7 +23,7 @@ func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify boo
 
 	for i, ch := range channels {
 		fmt.Println("Initiating scan for Process", i+1, "...")
-		go Worker(i, urls[i], timeout, InsecureSkipVerify, ch)
+		go Worker(i, &(*urlsPointer)[i], timeout, InsecureSkipVerify, ch)
 	}
 
 	for {

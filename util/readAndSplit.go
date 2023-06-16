@@ -6,8 +6,8 @@ import (
 	"os"
 )
 
-func ReadAndSplitFile(filename string, linesLimit int) ([][]string, error) {
-	file, err := os.Open(filename)
+func ReadAndSplitFile(filename *string, linesLimit *int) ([][]string, error) {
+	file, err := os.Open(*filename)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +22,7 @@ func ReadAndSplitFile(filename string, linesLimit int) ([][]string, error) {
 	for scanner.Scan() {
 		sublines = append(sublines, scanner.Text())
 		i++
-		if i == linesLimit {
+		if i == *linesLimit {
 			lines = append(lines, sublines)
 			sublines = nil
 			i = 0

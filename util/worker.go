@@ -10,19 +10,19 @@ import (
 
 func Worker(
 	id int,
-	DomainNames []string,
-	timeout int,
-	InsecureSkipVerify bool,
+	DomainNames *[]string,
+	timeout *int,
+	InsecureSkipVerify *bool,
 	ch chan<- string) {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: InsecureSkipVerify,
+			InsecureSkipVerify: *InsecureSkipVerify,
 		},
 	}
 
-	client := http.Client{Transport: tr, Timeout: time.Duration(timeout) * time.Second}
+	client := http.Client{Transport: tr, Timeout: time.Duration(*timeout) * time.Second}
 	fmt.Println("Scanning process for Process", id+1, "has begun")
-	for _, DomainName := range DomainNames {
+	for _, DomainName := range *DomainNames {
 		parsedURL, err := url.Parse(DomainName)
 		if err != nil {
 			panic(err)

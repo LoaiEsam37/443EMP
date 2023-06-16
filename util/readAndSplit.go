@@ -17,14 +17,14 @@ func ReadAndSplitFile(filename string, linesLimit int) ([][]string, error) {
 	defer file.Close()
 
 	// Create a variable to hold the lines of the file
-	var lines [][]string
 	// Create a new scanner to read the file
 	scanner := bufio.NewScanner(file)
 	// Create a counter variable to keep track of the number of lines in a sub-array
 	i := 0
 	// Create a variable to hold the lines of a sub-array
+	var lines [][]string
 	var sublines []string
-	fmt.Print("[ In Progress ] Spliting Domain Names")
+	fmt.Print("[ ! ] Spliting Domain Names")
 	// Iterate over the lines in the file
 	for scanner.Scan() {
 		// Append the current line to the sub-array
@@ -32,7 +32,7 @@ func ReadAndSplitFile(filename string, linesLimit int) ([][]string, error) {
 		// Increment the line counter
 		i++
 		// If the sub-array contains 1000 lines, append it to the main array and create a new sub-array
-		if i == 1000 {
+		if i == linesLimit {
 			lines = append(lines, sublines)
 			sublines = nil
 			i = 0
@@ -45,7 +45,7 @@ func ReadAndSplitFile(filename string, linesLimit int) ([][]string, error) {
 	fmt.Print("\r")
 	fmt.Print("                                          ")
 	fmt.Print("\r")
-	fmt.Println("[ Done! ] Spliting Domain Names")
+	fmt.Println("[ OK ] Spliting Domain Names")
 
 	// Return the main array of sub-arrays
 	return lines, nil

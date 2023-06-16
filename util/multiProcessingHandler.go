@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify bool, Output string) {
@@ -46,5 +47,6 @@ func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify boo
 			break
 		}
 	}
+	time.Sleep(3 * time.Second)
 	println("Mission accomplished! All targets have been scanned.")
 }

@@ -1,7 +1,0 @@
-timeout: 300
-TLSClientConfig:
-    InsecureSkipVerify: true
-fileInfo:
-    input: Domains.txt
-    output: outputFile.txt
-    linesPerSubarray: 50

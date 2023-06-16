@@ -1,50 +1,46 @@
 package util
 
 import (
+	"flag"
 	"fmt"
-	"os"
-
-	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
-	Timeout         int `yaml:"timeout"`
+	Timeout         int
 	TLSClientConfig struct {
-		InsecureSkipVerify bool `yaml:"InsecureSkipVerify"`
-	} `yaml:"TLSClientConfig"`
+		InsecureSkipVerify bool
+	}
 	FileInfo struct {
-		Input            string `yaml:"input"`
-		Output           string `yaml:"output"`
-		LinesPerSubarray int    `yaml:"linesPerSubarray"`
-	} `yaml:"fileInfo"`
+		Input            string
+		Output           string
+		LinesPerSubarray int
+	}
 }
 
 func SetConfig() (int, bool, string, string, int) {
-	file, err := os.Open("./config.yml")
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
 	var config Config
-	decoder := yaml.NewDecoder(file)
-	err = decoder.Decode(&config)
-	if err != nil {
-		panic(err)
-	}
 
-	var Timeout = config.Timeout
-	var InsecureSkipVerify = config.TLSClientConfig.InsecureSkipVerify
-	var Input = config.FileInfo.Input
-	var Output = config.FileInfo.Output
-	var LinesPerSubarray = config.FileInfo.LinesPerSubarray
+	flag.IntVar(&config.Timeout, "timeout", 4, "timeout in seconds")
+	flag.BoolVar(&config.TLSClientConfig.InsecureSkipVerify, "insecure", true, "Skip TLS certificate verification")
+	flag.StringVar(&config.FileInfo.Input, "input", "", "Path to Input File")
+	flag.StringVar(&config.FileInfo.Output, "output", "", "Path to Output File")
+	flag.IntVar(&config.FileInfo.LinesPerSubarray, "lines", 1000, "Number of URLs per Process")
+
+	flag.IntVar(&config.Timeout, "t", 3, "shortcut for -timeout")
+	flag.BoolVar(&config.TLSClientConfig.InsecureSkipVerify, "s", true, "shortcut for -insecure")
+	flag.StringVar(&config.FileInfo.Input, "i", "", "shortcut for -input")
+	flag.StringVar(&config.FileInfo.Output, "o", "", "shortcut for -output")
+	flag.IntVar(&config.FileInfo.LinesPerSubarray, "n", 1000, "shortcut for -lines")
+
+	flag.Parse()
 
 	fmt.Println("")
-	fmt.Println("InsecureSkipVerify:    ", InsecureSkipVerify)
-	fmt.Println("LinesPerSubarray:      ", LinesPerSubarray)
-	fmt.Println("Timeout:               ", Timeout)
-	fmt.Println("Input:                 ", Input)
-	fmt.Println("Output:                ", Output)
 
-	return Timeout, InsecureSkipVerify, Input, Output, LinesPerSubarray
+	if config.FileInfo.Input == "" {
+		panic("Error: input file path is not specified")
+	} else if config.FileInfo.Output == "" {
+		panic("Error: output file path is not specified")
+	}
+
+	return config.Timeout, config.TLSClientConfig.InsecureSkipVerify, config.FileInfo.Input, config.FileInfo.Output, config.FileInfo.LinesPerSubarray
 }

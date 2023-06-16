@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/LoaiEsam37/443EMP/util"
+	"github.com/LoaiEsam37/httpGun/util"
 )
 
 func main() {

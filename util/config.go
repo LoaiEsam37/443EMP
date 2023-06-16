@@ -39,11 +39,12 @@ func SetConfig() (int, bool, string, string, int) {
 	var Output = config.FileInfo.Output
 	var LinesPerSubarray = config.FileInfo.LinesPerSubarray
 
-	fmt.Println("InsecureSkipVerify: ", InsecureSkipVerify)
-	fmt.Println("LinesPerSubarray: ", LinesPerSubarray)
-	fmt.Println("Timeout: ", Timeout)
-	fmt.Println("Input: ", Input)
-	fmt.Println("Output: ", Output)
+	fmt.Println("")
+	fmt.Println("InsecureSkipVerify:    ", InsecureSkipVerify)
+	fmt.Println("LinesPerSubarray:      ", LinesPerSubarray)
+	fmt.Println("Timeout:               ", Timeout)
+	fmt.Println("Input:                 ", Input)
+	fmt.Println("Output:                ", Output)
 
 	return Timeout, InsecureSkipVerify, Input, Output, LinesPerSubarray
 }

@@ -24,7 +24,8 @@ func ReadAndSplitFile(filename string, linesLimit int) ([][]string, error) {
 	// Create a variable to hold the lines of a sub-array
 	var lines [][]string
 	var sublines []string
-	fmt.Print("[ ! ] Spliting Domain Names")
+	fmt.Println("")
+	fmt.Println("[ ! ] Spliting Domain Names")
 	// Iterate over the lines in the file
 	for scanner.Scan() {
 		// Append the current line to the sub-array
@@ -42,9 +43,6 @@ func ReadAndSplitFile(filename string, linesLimit int) ([][]string, error) {
 	if len(sublines) > 0 {
 		lines = append(lines, sublines)
 	}
-	fmt.Print("\r")
-	fmt.Print("                                          ")
-	fmt.Print("\r")
 	fmt.Println("[ OK ] Spliting Domain Names")
 
 	// Return the main array of sub-arrays

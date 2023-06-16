@@ -21,8 +21,8 @@ func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify boo
 	}
 
 	for i, ch := range channels {
-		go Worker(i, urls[i], timeout, InsecureSkipVerify, ch)
 		fmt.Println("Initiating scan for Process", i+1, "...")
+		go Worker(i, urls[i], timeout, InsecureSkipVerify, ch)
 	}
 
 	for {

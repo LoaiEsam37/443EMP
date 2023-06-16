@@ -13,8 +13,8 @@ type Config struct {
 		InsecureSkipVerify bool `yaml:"InsecureSkipVerify"`
 	} `yaml:"TLSClientConfig"`
 	FileInfo struct {
-		input            string `yaml:"input"`
-		output           string `yaml:"output"`
+		Input            string `yaml:"input"`
+		Output           string `yaml:"output"`
 		LinesPerSubarray int    `yaml:"linesPerSubarray"`
 	} `yaml:"fileInfo"`
 }
@@ -35,12 +35,15 @@ func SetConfig() (int, bool, string, string, int) {
 
 	var Timeout = config.Timeout
 	var InsecureSkipVerify = config.TLSClientConfig.InsecureSkipVerify
-	var Input = config.FileInfo.input
-	var Output = config.FileInfo.output
+	var Input = config.FileInfo.Input
+	var Output = config.FileInfo.Output
 	var LinesPerSubarray = config.FileInfo.LinesPerSubarray
 
-	fmt.Println("Timeout: ", Timeout)
 	fmt.Println("InsecureSkipVerify: ", InsecureSkipVerify)
+	fmt.Println("LinesPerSubarray: ", LinesPerSubarray)
+	fmt.Println("Timeout: ", Timeout)
+	fmt.Println("Input: ", Input)
+	fmt.Println("Output: ", Output)
 
 	return Timeout, InsecureSkipVerify, Input, Output, LinesPerSubarray
 }

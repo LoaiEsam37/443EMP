@@ -5,11 +5,11 @@ import (
 )
 
 func main() {
-	Timeout, InsecureSkipVerify, Filename, LinesPerSubarray := util.SetConfig()
-	urls, err := util.ReadAndSplitFile(Filename, LinesPerSubarray)
+	Timeout, InsecureSkipVerify, Input, Output, LinesPerSubarray := util.SetConfig()
+	urls, err := util.ReadAndSplitFile(Input, LinesPerSubarray)
 	if err != nil {
 		panic(err)
 	}
-	util.MultiProcessingHandler(urls, Timeout, InsecureSkipVerify)
+	util.MultiProcessingHandler(urls, Timeout, InsecureSkipVerify, Output)
 
 }

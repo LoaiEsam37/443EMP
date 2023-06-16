@@ -6,9 +6,9 @@ import (
 	"sync"
 )
 
-func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify bool) {
+func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify bool, Output string) {
 
-	file, err := os.OpenFile("output.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	file, err := os.OpenFile(Output, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		panic(err)
 	}

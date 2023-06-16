@@ -15,14 +15,12 @@ func Worker(
 	timeout int,
 	InsecureSkipVerify bool,
 	ch chan<- string) {
-	// defer to mark the task as done when the function finishes
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: InsecureSkipVerify,
 		},
 	}
 
-	// make a seperate client to not interfere with other requests while multiprocessing
 	client := http.Client{Transport: tr, Timeout: time.Duration(timeout) * time.Second}
 	for _, DomainName := range DomainNames {
 		parsedURL, err := url.Parse(DomainName)

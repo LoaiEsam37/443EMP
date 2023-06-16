@@ -5,7 +5,17 @@ import (
 )
 
 func main() {
+
+	println("     _     _   _          ____              ")
+	println("    | |__ | |_| |_ _ __  / ___|_   _ _ __  ")
+	println("    | '_ \\| __| __| '_ \\| |  _| | | | '_ \\ ")
+	println("    | | | | |_| |_| |_) | |_| | |_| | | | |")
+	println("    |_| |_|\\__|\\__| .__/ \\____|\\__,_|_| |_|")
+	println("                  |_|                      ")
+	println("")
+
 	Timeout, InsecureSkipVerify, Input, Output, LinesPerSubarray := util.SetConfig()
+	println("Initiating domain name parsing process...")
 	urls, err := util.ReadAndSplitFile(Input, LinesPerSubarray)
 	if err != nil {
 		panic(err)

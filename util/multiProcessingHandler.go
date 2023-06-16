@@ -3,7 +3,6 @@ package util
 import (
 	"fmt"
 	"os"
-	"sync"
 )
 
 func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify bool, Output string) {
@@ -15,20 +14,17 @@ func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify boo
 	defer file.Close()
 	numWorkers := len(urls)
 
-	// create a slice of channels
 	channels := make([]chan string, numWorkers)
 
-	// create a channel for each worker
 	for i := 0; i < numWorkers; i++ {
 		channels[i] = make(chan string)
 	}
-	var wg sync.WaitGroup
-	wg.Add(numWorkers)
-	// start the workers
+
 	for i, ch := range channels {
 		go Worker(i, urls[i], timeout, InsecureSkipVerify, ch)
-		fmt.Println("Process", i+1, "is scanning", len(urls[i]), "Domain Names")
+		fmt.Println("Initiating scan for Process", i+1, "...")
 	}
+
 	for {
 		allClosed := true
 		for _, ch := range channels {
@@ -47,7 +43,8 @@ func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify boo
 			}
 		}
 		if allClosed {
-			break // all channels are closed, exit the loop
+			break
 		}
 	}
+	println("Mission accomplished! All targets have been scanned.")
 }

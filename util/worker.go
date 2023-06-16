@@ -4,6 +4,8 @@ import (
 	"crypto/tls"
 	"fmt"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 )
 
@@ -23,6 +25,16 @@ func Worker(
 	// make a seperate client to not interfere with other requests while multiprocessing
 	client := http.Client{Transport: tr, Timeout: time.Duration(timeout) * time.Second}
 	for _, DomainName := range DomainNames {
+		parsedURL, err := url.Parse(DomainName)
+		if err != nil {
+			panic(err)
+		}
+
+		if !strings.HasPrefix(parsedURL.Host, "www.") {
+			DomainName = "http://www." + parsedURL.Host + parsedURL.Path
+		} else if parsedURL.Scheme == "" {
+			DomainName = "http://" + DomainName
+		}
 		resp, err := client.Get(DomainName)
 		if err != nil {
 			continue
@@ -32,5 +44,5 @@ func Worker(
 		defer resp.Body.Close()
 	}
 	close(ch)
-	fmt.Println("Process", id+1, "is Done")
+	fmt.Println("Mission accomplished for Process", id+1, ". Initiating cool-down sequence...")
 }

@@ -2,7 +2,6 @@ package util
 
 import (
 	"flag"
-	"fmt"
 )
 
 type Config struct {
@@ -27,14 +26,12 @@ func SetConfig() (int, bool, string, string, int) {
 	flag.IntVar(&config.FileInfo.LinesPerSubarray, "lines", 1000, "Number of URLs per Process")
 
 	flag.IntVar(&config.Timeout, "t", 3, "shortcut for -timeout")
-	flag.BoolVar(&config.TLSClientConfig.InsecureSkipVerify, "s", true, "shortcut for -insecure")
+	flag.BoolVar(&config.TLSClientConfig.InsecureSkipVerify, "v", true, "shortcut for -insecure")
 	flag.StringVar(&config.FileInfo.Input, "i", "", "shortcut for -input")
 	flag.StringVar(&config.FileInfo.Output, "o", "", "shortcut for -output")
 	flag.IntVar(&config.FileInfo.LinesPerSubarray, "n", 1000, "shortcut for -lines")
 
 	flag.Parse()
-
-	fmt.Println("")
 
 	if config.FileInfo.Input == "" {
 		panic("Error: input file path is not specified")

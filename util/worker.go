@@ -19,7 +19,6 @@ func Worker(
 	file *os.File) {
 	// defer to mark the task as done when the function finishes
 	defer wg.Done()
-	fmt.Println("worker: ", id, "started")
 	// perform some task
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
@@ -32,6 +31,7 @@ func Worker(
 	defer mutex.Unlock()
 	// make a seperate client to not interfere with other requests while multiprocessing
 	client := http.Client{Transport: tr, Timeout: time.Duration(timeout) * time.Second}
+	fmt.Println("worker: ", id, "started")
 	for _, DomainName := range DomainNames {
 		resp, err := client.Get(DomainName)
 		if err != nil {

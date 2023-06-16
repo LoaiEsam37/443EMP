@@ -10,9 +10,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	Domains := util.Get(urls, Timeout, InsecureSkipVerify)
-	if err != nil {
-		panic(err)
-	}
+	util.MultiProcessingHandler(urls, Timeout, InsecureSkipVerify)
 
 }

@@ -13,20 +13,41 @@ func MultiProcessingHandler(urls [][]string, timeout int, InsecureSkipVerify boo
 		panic(err)
 	}
 	defer file.Close()
+	numWorkers := len(urls)
 
-	var wg sync.WaitGroup
-	var mutex sync.Mutex
+	// create a slice of channels
+	channels := make([]chan string, numWorkers)
 
-	// start the workers
-	for j := 1; j < len(urls); j++ {
-		wg.Add(1)
-		go Worker(j, &wg, urls[j], timeout, InsecureSkipVerify, &mutex, file)
+	// create a channel for each worker
+	for i := 0; i < numWorkers; i++ {
+		channels[i] = make(chan string)
 	}
-
-	// use a separate goroutine to wait for the workers to finish
-	go func() {
-		wg.Wait()
-	}()
-
-	fmt.Println("all tasks finished!")
+	var wg sync.WaitGroup
+	wg.Add(numWorkers)
+	// start the workers
+	for i, ch := range channels {
+		go Worker(i, urls[i], timeout, InsecureSkipVerify, ch)
+		fmt.Println("Process", i+1, "is scanning", len(urls[i]), "Domain Names")
+	}
+	for {
+		allClosed := true
+		for _, ch := range channels {
+			select {
+			case vaildUrl, open := <-ch:
+				if open {
+					allClosed = false
+					dataWithNewline := vaildUrl + "\n"
+					_, err = file.WriteString(dataWithNewline)
+					if err != nil {
+						panic(err)
+					}
+				}
+			default:
+				allClosed = false
+			}
+		}
+		if allClosed {
+			break // all channels are closed, exit the loop
+		}
+	}
 }

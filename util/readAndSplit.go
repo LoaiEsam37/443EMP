@@ -6,16 +6,15 @@ import (
 	"os"
 )
 
-func ReadAndSplitFile(filename *string, linesLimit *int) ([][]string, int, error) {
+func ReadAndSplitFile(filename *string, linesLimit *int) ([][]string, int) {
 	file, err := os.Open(*filename)
 	if err != nil {
-		return nil, 0, err
+		panic(err)
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	i := 0
-	j := 0
 	var lines [][]string
 	var sublines []string
 
@@ -23,7 +22,6 @@ func ReadAndSplitFile(filename *string, linesLimit *int) ([][]string, int, error
 	for scanner.Scan() {
 		sublines = append(sublines, scanner.Text())
 		i++
-		j++
 		if i == *linesLimit {
 			lines = append(lines, sublines)
 			sublines = nil
@@ -33,6 +31,10 @@ func ReadAndSplitFile(filename *string, linesLimit *int) ([][]string, int, error
 	if len(sublines) > 0 {
 		lines = append(lines, sublines)
 	}
+	fileInfo, err := file.Stat()
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println("Domain name splitting process has completed successfully.")
-	return lines, j, nil
+	return lines, int(fileInfo.Size())
 }

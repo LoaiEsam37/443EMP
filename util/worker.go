@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"runtime"
 	"time"
 )
 
@@ -33,11 +34,20 @@ func Worker(
 		}
 		resp, err := client.Get(DomainName)
 		if err != nil {
-			continue
+			if e, ok := err.(runtime.Error); ok {
+				fmt.Print("\033[31m")
+				fmt.Println("Memory management error:", e.Error())
+				fmt.Print("\033[0m")
+				continue
+			} else {
+				continue
+			}
 		} else if resp.StatusCode == 200 {
 			ch <- DomainName
 		} else if resp.StatusCode == 429 {
+			fmt.Print("\033[31m")
 			fmt.Println("The server that was contacted has returned a 429 error code.")
+			fmt.Print("\033[0m")
 		}
 		defer resp.Body.Close()
 	}

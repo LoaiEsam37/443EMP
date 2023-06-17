@@ -18,11 +18,11 @@ func main() {
 
 	Timeout, InsecureSkipVerify, Input, Output, LinesPerSubarray := util.SetConfig()
 	println("Initiating domain name parsing process...")
-	urls, err := util.ReadAndSplitFile(&Input, &LinesPerSubarray)
+	urls, j, err := util.ReadAndSplitFile(&Input, &LinesPerSubarray)
 	if err != nil {
 		panic(err)
 	}
-	println("[!] Attention user! This tool will require approximately", (len(urls) * 50 / 1024), "MB of RAM resources to operate at optimal performance levels Please ensure that your system has sufficient resources available before launching the tool.")
+	println("[!] Attention user! This tool will require approximately", (j * 50 / 1024), "MB of RAM resources to operate at optimal performance levels Please ensure that your system has sufficient resources available before launching the tool.")
 	time.Sleep(3 * time.Second)
 	util.MultiProcessingHandler(&urls, &Timeout, &InsecureSkipVerify, &Output)
 

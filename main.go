@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/LoaiEsam37/httpGun/util"
 )
 
@@ -21,6 +23,7 @@ func main() {
 		panic(err)
 	}
 	println("[!] Attention user! This tool will require approximately", (len(urls) * 50 / 1024), "MB of RAM resources to operate at optimal performance levels Please ensure that your system has sufficient resources available before launching the tool.")
+	time.Sleep(3 * time.Second)
 	util.MultiProcessingHandler(&urls, &Timeout, &InsecureSkipVerify, &Output)
 
 }

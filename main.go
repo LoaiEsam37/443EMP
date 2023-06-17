@@ -23,5 +23,4 @@ func main() {
 	println("[!] Attention user! This tool will require approximately", (((size / 1024) + ((tmp * 72) / 1024)) + ((tmp * 10) / 1024)), "MB of RAM resources to operate at optimal performance levels Please ensure that your system has sufficient resources available before launching the tool.")
 	time.Sleep(3 * time.Second)
 	util.MultiProcessingHandler(&urls, &Timeout, &InsecureSkipVerify, &Output)
-
 }

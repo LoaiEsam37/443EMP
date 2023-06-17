@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 	"fmt"
 	"net/http"
-	"net/url"
 	"runtime"
 	"time"
 )
@@ -24,14 +23,6 @@ func Worker(
 	client := http.Client{Transport: tr, Timeout: time.Duration(*timeout) * time.Second}
 	fmt.Println("Scanning process for Process", id+1, "has begun")
 	for _, DomainName := range *DomainNames {
-		parsedURL, err := url.Parse(DomainName)
-		if err != nil {
-			panic(err)
-		}
-
-		if parsedURL.Scheme == "" {
-			DomainName = "http://" + DomainName
-		}
 		resp, err := client.Get(DomainName)
 		if err != nil {
 			if e, ok := err.(runtime.Error); ok {
